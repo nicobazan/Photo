@@ -1,20 +1,145 @@
 ﻿@{
     ViewBag.Title = "Contact Mark";
 }
-<h2>@ViewBag.Title.</h2>
 
 
-<div class="panel-default col-lg-5">
-    <div class="panel-heading">
-        <h2>Contact Mark</h2>
+<br />
+<div ng-controller="contactController as cntr">
+    <div class="panel panel-default col-lg-5" style="padding:0px">
+        <div class="panel-heading">
+            <h1><b>Contact Mark</b></h1>
+        </div>
+        <div class="panel-body">
+            <strong>Phone:</strong> (626) 931-9251<br /><br />
+            <strong>Email:</strong><a href="mailto:markar1217@gmail.com"> markar1217@gmail.com</a><br /><br />
+            <strong>Instagram:</strong><a href="http://www.instagram.com/drakecryin"> DrakeCryin</a><br /><br />
+        </div>
+        <div class="panel-footer">
+            Send Mark a message
+            <button ng-show="cntr.btnShow" class="btn btn-info" ng-click="cntr.showForm()">Here</button>
+        </div>
     </div>
-    <div class="panel-body">
-        <strong>Phone:</strong> (626) 931-9251<br />
-        <strong>Email:</strong><a href="mailto:markar1217@gmail.com"> markar1217@gmail.com</a><br />
-        <strong>Instagram:</strong><a href="http://www.instagram.com/drakecryin"> DrakeCryin</a><br />
-    </div>
-    <div class="panel-footer">Send Mark a message
-        <button class="btn btn-danger">Here</button>
-    </div> 
+    <div class="col-lg-1"></div>
+    <form ng-cloak ng-hide="cntr.formHide" id="emailForm" name="cntr.emailForm" ng-submit="cntr.postEmail()" class="panel panel-default col-lg-5" style="padding:0px">
+        <div class="panel-heading">
+            <h1><b>Send email message</b></h1>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="title"><strong>Title</strong></label>
+                <input type="text" 
+                        ng-model="cntr.emailForm.subject"
+                        class="form-control"
+                        ng-class="{'error': cntr.showFormErrors && !cntr.emailForm.subject.$valid}" 
+                        name="title" 
+                        id="title" 
+                        placeholder="title of message" 
+                        ng-minlength="1" 
+                        ng-maxlength="50"
+                        required>
+                <div role="alert" class="help-inline error">
+                    <span class="error" ng-show="cntr.showFormErrors && cntr.emailForm.subject.$error.required">Title is required</span>
+                    <span class="error" ng-show="cntr.showFormErrors && cntr.emailForm.subject.$error.minlength">Too short! The title must be at least 1 characters</span>
+                    <span class="error" ng-show="cntr.showFormErrors && cntr.emailForm.subject.$error.maxlength">Too long! The title must be 50 characters or less</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="contact"><strong>Contact Email</strong></label>
+                <input type="email"
+                        ng-model="cntr.emailForm.from"
+                        class="form-control"
+                        ng-class="{'error': cntr.showFormErrors && !cntr.emailForm.from.$valid}"
+                        id="contact"
+                        name="contact"
+                        placeholder="email"
+                        ng-maxlength="200"
+                        required>
+                <div role="alert" class="help-inline error">
+                    <span class="error" ng-show="cntr.showFormErrors && cntr.emailForm.from.$error.required">Contact email is required</span>
+                    <span class="error" ng-show="cntr.showFormErrors && cntr.emailForm.from.$error.maxlength">Too long! The email must be 50 characters or less</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="message"><strong>Message</strong></label>
+                <input style="height:100px;width:600px" type="text"
+                        ng-model="cntr.emailForm.content"
+                        class="form-control"
+                        ng-class="{'error': cntr.showFormErrors && !cntr.emailForm.content.$valid}"
+                        name="message"
+                        id="message"
+                        placeholder="info about inqueries and questions"
+                        ng-maxlength="500"
+                        required>
+                <div role="alert" class="help-inline error">
+                    <span class="error" ng-show="cntr.showFormErrors && cntr.emailForm.content.$error.required">Message body  is required</span>
+                    <span class="error" ng-show="cntr.showFormErrors && cntr.emailForm.content.$error.maxlength">Too long! Your message must be 500 characters or less</span>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <button class="btn btn-info" type="submit">Send</button>
+        </div>
+    </form>
 </div>
+<script type="text/javascript">
+    (function () {
+        "use strict";
 
+        angular.module(APPNAME, [])
+            .controller('contactController', ContactController);
+
+        ContactController.$inject = ['$scope', '$http'];
+
+        function ContactController($scope, $http ) {
+
+            var vm = this;
+
+            vm.btnShow = true;
+
+            vm.formHide = true;
+
+            vm.emailForm = null;
+
+            vm.showFormErrors = false;
+
+            vm.showForm = _showForm;
+
+            vm.postEmail = _postEmail;
+
+            render();
+
+            function render() {
+
+                console.log("Angularjs is operating");
+            }
+
+            function _showForm() {
+
+                vm.formHide = false;
+                vm.btnShow = false;
+            }
+
+            function _postEmail() {
+
+                console.log(vm.emailForm)
+
+                $http.post("/api/mail/send", { from: vm.emailForm.from, subject: vm.emailForm.subject, content: vm.emailForm.content }).then(successEmail, errorEmail);
+
+            }
+
+            function successEmail(response) {
+
+                vm.formHide = true;
+                vm.btnShow = true;
+
+                console.log(response);
+            }
+            
+            function errorEmail(response,error) {
+
+                console.log(response,error);
+            }
+
+        }
+    })();
+</script>

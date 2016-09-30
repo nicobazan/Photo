@@ -1,47 +1,70 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+<div ng-controller="indexController as index">
+    <div>
+        <h1 class="title-font">Mark Ramirez Photography</h1>
+        @*<p class="lead"></p>*@
+    </div>
+    <div class="row">
 
-<div>
-    <h1 class="title-font">Mark Ramirez Photography</h1>
-    @*<p class="lead"></p>*@
+        <img src="~/Content/images/markpic.jpg" class="img-responsive" alt="Home pic" style="width: 2000px; height: 475px;">
+    </div>
+    <div class="row image-bar">
+        <h3 class="image-bar-style pull-right col-lg-10">A City Under Fire</h3>
+
+    </div>
+    <div class="row">
+        <a class="pull-right" href="http://www.instagram.com/drakecryin" style="padding-top:7px">
+            <img border="0" src="~/Content/images/Instagram.png" width="100" height="100">
+
+        </a>
+        <a class="pull-right" href="#">
+            <img border="0" src="~/Content/images/github - icon.png" width="115" height="115">
+        </a>
+    </div>
 </div>
-<div class="row">
+<script type="text/javascript">
+      (function () {
+            "use strict";
 
-    <img src="~/Content/images/markpic.jpg" class="img-responsive" alt="Home pic" style="width: 2000px; height: 475px;">
-</div>
-<div class="row image-bar">
-    <h3 class="image-bar-style pull-right col-lg-10">A City Under Fire</h3>
+        angular.module(APPNAME, ["ngRoute"])
+                .config(['$routeProvider', function ($routeProvider) {
+                    $routeProvider
+                        .when("/", {
+                            templateUrl: "Index.cshtml"
+                        })
 
-</div>
-<div class="row">
-    <a class="pull-right" href="http://www.instagram.com/drakecryin" style="padding-top:7px">
-        <img border="0" src="~/Content/images/Instagram.png" width="100" height="100">
+                        .when("/home/index", {
+                            templateUrl: "Index.cshtml"
+                        })
 
-    </a>
-    <a class="pull-right" href="#">
-        <img border="0" src="~/Content/images/github - icon.png" width="115" height="115">
-    </a>
-</div>
+                        .when("/home/contact", {
+                            templateUrl: "Contact.cshtml"
+                        })
 
-@*<div class="row">
-        <div class="col-md-4">
-            <h2>Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-            <h2>Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-            <h2>Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </div>
-    </div>*@
+                        .otherwise({redirectTo:'/'})
+                }]);
+     angular.module(APPNAME, [])
+                .controller('indexController', IndexController);
+
+            IndexController.$inject = ['$scope'];
+
+            function IndexController($scope) {
+
+                var vm = this;
+                
+                render();
+
+                function render() {
+
+                    console.log("Angularjs is operating");
+                }
+
+    }
+
+    })();
+    </script>
+   
+
+    

@@ -20,7 +20,7 @@ namespace KUDOS.Controllers
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult Contact()//maybe these need to match up to mail
         {
             ViewBag.Message = "Your contact page.";
 
